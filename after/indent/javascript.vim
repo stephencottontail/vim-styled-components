@@ -44,7 +44,7 @@ fu! s:IsStyledDefinition(lnum)
   for item in s:SynSOL(a:lnum)
     " if syntax-item is a jsTemplateString return 1 - true
     " `==#` is a match case comparison of the item
-    if item ==# 'styledDefinition'
+    if item ==# 'jsTemplateString'
       return 1
     endif
   endfor
@@ -76,6 +76,8 @@ fu! s:CountOccurencesInEOL(lnum, str, offset)
 
   " iterate through all items in the given line
   for item in s:SynEOL(a:lnum, a:offset)
+    echom "for loop"
+    echom item
     " if the syntax-item equals the given str increment the counter
     " `==?` is a case insensitive equal operation
     if item == a:str
@@ -106,8 +108,8 @@ fu! GetStyledIndent()
     " - one shiftwidth per open nested definition region
     let l:styledIndent = &sw
     let l:styledIndent += min([
-          \ s:CountOccurencesInSOL(v:lnum, 'styledNestedRegion'),
-          \ s:CountOccurencesInEOL(v:lnum, 'styledNestedRegion', 0)
+          \ s:CountOccurencesInSOL(v:lnum, 'jsTemplateString'),
+          \ s:CountOccurencesInEOL(v:lnum, 'jsTemplateString', 0)
           \ ]) * &sw
 
     " decrease indentation by one shiftwidth, if the styled definition
